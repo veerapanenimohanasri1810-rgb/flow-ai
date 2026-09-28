@@ -1,0 +1,6 @@
+{
+  "name": "FlowAI — Personal Productivity Workspace",
+  "description": "One workspace for your tasks, goals, projects, habits and time. Intelligent personal productivity with upcoming AI coordination.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

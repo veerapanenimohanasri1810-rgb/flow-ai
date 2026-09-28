@@ -1,0 +1,336 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and settings",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "theme": { "type": "string", "enum": ["light", "dark", "system"] },
+        "workingHoursStart": { "type": "string", "maxLength": 10 },
+        "workingHoursEnd": { "type": "string", "maxLength": 10 },
+        "dailyFocusGoalMinutes": { "type": "number" },
+        "productivityScore": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "name", "email"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Individual todo or productivity action item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "dueDate": { "type": "string" },
+        "dueTime": { "type": "string" },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+        "category": { "type": "string", "maxLength": 50 },
+        "projectId": { "type": "string" },
+        "estimatedDuration": { "type": "number" },
+        "status": { "type": "string", "enum": ["Todo", "In Progress", "Completed"] },
+        "tags": { "type": "string" },
+        "order": { "type": "number" },
+        "completedAt": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "priority", "status"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Structured project grouping tasks and milestones",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "startDate": { "type": "string" },
+        "deadline": { "type": "string" },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+        "status": { "type": "string", "enum": ["Planning", "Active", "Paused", "Completed"] },
+        "progress": { "type": "number" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "status"]
+    },
+    "ProjectMilestone": {
+      "title": "ProjectMilestone",
+      "description": "Milestone within a project",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "projectId": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "dueDate": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "order": { "type": "number" }
+      },
+      "required": ["id", "projectId", "userId", "title"]
+    },
+    "Goal": {
+      "title": "Goal",
+      "description": "High-level personal, career or health objective",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "category": { "type": "string", "enum": ["Personal", "Education", "Career", "Finance", "Health", "Other"] },
+        "targetDate": { "type": "string" },
+        "progress": { "type": "number" },
+        "status": { "type": "string", "enum": ["In Progress", "Completed", "On Hold"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "category", "progress"]
+    },
+    "GoalMilestone": {
+      "title": "GoalMilestone",
+      "description": "Milestone checkpoint for a goal",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "goalId": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "targetDate": { "type": "string" },
+        "completed": { "type": "boolean" }
+      },
+      "required": ["id", "goalId", "userId", "title"]
+    },
+    "CalendarEvent": {
+      "title": "CalendarEvent",
+      "description": "Scheduled event, meeting, or timeblock",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "allDay": { "type": "boolean" },
+        "type": { "type": "string", "enum": ["task", "deadline", "meeting", "focus", "habit"] },
+        "relatedId": { "type": "string" },
+        "color": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "startDate", "type"]
+    },
+    "Habit": {
+      "title": "Habit",
+      "description": "Recurring positive habit to track and maintain streaks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 500 },
+        "frequency": { "type": "string", "enum": ["daily", "weekly"] },
+        "targetDaysPerWeek": { "type": "number" },
+        "currentStreak": { "type": "number" },
+        "longestStreak": { "type": "number" },
+        "category": { "type": "string" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "frequency"]
+    },
+    "HabitEntry": {
+      "title": "HabitEntry",
+      "description": "Daily habit log entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "habitId": { "type": "string" },
+        "userId": { "type": "string" },
+        "date": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "habitId", "userId", "date", "completed"]
+    },
+    "FocusSession": {
+      "title": "FocusSession",
+      "description": "Recorded deep work or Pomodoro session",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "taskId": { "type": "string" },
+        "taskTitle": { "type": "string", "maxLength": 200 },
+        "sessionGoal": { "type": "string", "maxLength": 500 },
+        "category": { "type": "string" },
+        "durationMinutes": { "type": "number" },
+        "type": { "type": "string", "enum": ["pomodoro", "custom", "short-break", "long-break"] },
+        "completed": { "type": "boolean" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "userId", "durationMinutes", "completed", "timestamp"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Personal knowledge note or project memo",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "content": { "type": "string", "maxLength": 20000 },
+        "category": { "type": "string", "maxLength": 50 },
+        "tags": { "type": "string" },
+        "isPinned": { "type": "boolean" },
+        "summary": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "content"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "System or productivity notification item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string", "enum": ["info", "warning", "success", "deadline", "streak"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "link": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "message", "read"]
+    },
+    "DailyReview": {
+      "title": "DailyReview",
+      "description": "End-of-day reflection and metrics log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "date": { "type": "string" },
+        "whatWentWell": { "type": "string", "maxLength": 2000 },
+        "whatToImprove": { "type": "string", "maxLength": 2000 },
+        "tasksCompletedCount": { "type": "number" },
+        "tasksRemainingCount": { "type": "number" },
+        "focusMinutes": { "type": "number" },
+        "habitsCompletedCount": { "type": "number" },
+        "productivityRating": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "date"]
+    },
+    "WeeklyReview": {
+      "title": "WeeklyReview",
+      "description": "Weekly retrospective and aggregate metrics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "weekIdentifier": { "type": "string" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "totalTasksCompleted": { "type": "number" },
+        "totalFocusHours": { "type": "number" },
+        "goalProgressSummary": { "type": "string", "maxLength": 2000 },
+        "habitConsistencyRate": { "type": "number" },
+        "overdueTasksCount": { "type": "number" },
+        "keyWins": { "type": "string", "maxLength": 2000 },
+        "nextWeekPriorities": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "weekIdentifier"]
+    },
+    "AgentActivity": {
+      "title": "AgentActivity",
+      "description": "Structured log of AI Agent actions and coordination events (planned)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "actionType": { "type": "string" },
+        "status": { "type": "string", "enum": ["proposed", "approved", "executed", "reverted"] },
+        "inputGoal": { "type": "string", "maxLength": 2000 },
+        "summary": { "type": "string", "maxLength": 2000 },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "userId", "actionType", "status", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/profiles/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profile and productivity preferences"
+    },
+    "/tasks/{taskId}": {
+      "schema": { "$ref": "#/entities/Task" },
+      "description": "User actionable tasks and todos"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "User projects"
+    },
+    "/projectMilestones/{milestoneId}": {
+      "schema": { "$ref": "#/entities/ProjectMilestone" },
+      "description": "Milestones linked to user projects"
+    },
+    "/goals/{goalId}": {
+      "schema": { "$ref": "#/entities/Goal" },
+      "description": "Personal, career, and education goals"
+    },
+    "/goalMilestones/{milestoneId}": {
+      "schema": { "$ref": "#/entities/GoalMilestone" },
+      "description": "Milestones linked to user goals"
+    },
+    "/calendarEvents/{eventId}": {
+      "schema": { "$ref": "#/entities/CalendarEvent" },
+      "description": "Scheduled events, deadlines, and meetings"
+    },
+    "/habits/{habitId}": {
+      "schema": { "$ref": "#/entities/Habit" },
+      "description": "Daily/weekly tracked habits"
+    },
+    "/habitEntries/{entryId}": {
+      "schema": { "$ref": "#/entities/HabitEntry" },
+      "description": "Daily habit completion records"
+    },
+    "/focusSessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/FocusSession" },
+      "description": "Focus and Pomodoro sessions log"
+    },
+    "/notes/{noteId}": {
+      "schema": { "$ref": "#/entities/Note" },
+      "description": "Rich text notes and research items"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "User notifications"
+    },
+    "/dailyReviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/DailyReview" },
+      "description": "Daily productivity reflection logs"
+    },
+    "/weeklyReviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/WeeklyReview" },
+      "description": "Weekly productivity reviews"
+    },
+    "/agentActivities/{activityId}": {
+      "schema": { "$ref": "#/entities/AgentActivity" },
+      "description": "Structured AI agent plan and coordination records"
+    }
+  }
+}
